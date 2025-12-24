@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Merry Christmas 🎄</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Cookie&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", Arial, sans-serif;
+            background: #eef4ff;
+            overflow: hidden;
+        }
+
+        /* Shared layout */
+        .screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background: url("bg-cloud.jpg");
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .6s ease;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .18);
+            max-width: 440px;
+            margin: 20px;
+        }
+
+        h2 {
+            font-family: 'Cookie', cursive;
+            font-weight: 400;
+            margin: 10px 0;
+            color: #000;
+            font-size: 52px;
+        }
+
+        .soft {
+            font-weight: 400;
+            opacity: .7;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 16px;
+            padding: 14px 32px;
+            border-radius: 25px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: white;
+            font-weight: 600;
+            transition: transform .2s, box-shadow .2s;
+            box-shadow: 0 4px 15px rgba(79, 195, 247, .3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 195, 247, .5);
+        }
+
+        /* Floating intro text */
+        .float-text {
+            animation: float 2.4s ease-in-out infinite;
+            font-family: 'Cookie', cursive;
+            font-weight: 400;
+            font-size: 56px;
+            color: #000;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, .8);
+            margin-bottom: 30px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Gift box animation */
+        .gift-box {
+            cursor: pointer;
+            transition: transform .3s;
+            animation: bounce 1.5s ease-in-out infinite;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .tap-label {
+            margin-top: 10px;
+            font-size: 14px;
+            background: #fff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .7;
+            }
+        }
+
+        /* Snowfall particles */
+        .snow {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle, #a8d8ff 3px, transparent 4px),
+                radial-gradient(circle, #c8e6ff 4px, transparent 5px),
+                radial-gradient(circle, #e0f2ff 2px, transparent 3px);
+            background-size: 120px 120px, 160px 160px, 200px 200px;
+            animation: snow 12s linear infinite;
+            opacity: .8;
+        }
+
+        @keyframes snow {
+            from {
+                background-position: 0 -300px, 50px -400px, 100px -500px;
+            }
+
+            to {
+                background-position: 0 300px, 50px 400px, 100px 500px;
+            }
+        }
+
+        /* Flip cards - Polaroid style */
+        .cards {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
+            padding: 10px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .flip:nth-child(4),
+        .flip:nth-child(5) {
+            margin: 0 8px;
+        }
+
+        .flip {
+            width: 100px;
+            height: 120px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip:nth-child(1) .flip-inner {
+            transform: rotate(-3deg);
+        }
+
+        .flip:nth-child(2) .flip-inner {
+            transform: rotate(2deg);
+        }
+
+        .flip:nth-child(3) .flip-inner {
+            transform: rotate(-2deg);
+        }
+
+        .flip:nth-child(4) .flip-inner {
+            transform: rotate(3deg);
+        }
+
+        .flip:nth-child(5) .flip-inner {
+            transform: rotate(-1deg);
+        }
+
+        .flip-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: .6s;
+        }
+
+        .flip.flipped .flip-inner {
+            transform: rotateY(180deg) !important;
+        }
+
+        .flip:hover .flip-inner {
+            transform: scale(1.05) rotate(0deg);
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 600;
+            background: #fff;
+            padding: 8px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, .2);
+        }
+
+        .front {
+            background: #fff;
+        }
+
+        .front::before {
+            content: '';
+            position: absolute;
+            inset: 8px 8px 25px 8px;
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb3c1 100%);
+            border-radius: 2px;
+        }
+
+        .front img {
+            position: relative;
+            z-index: 1;
+        }
+
+        .back {
+            background: linear-gradient(135deg, #ffc0cb 0%, #ffb3c1 100%);
+            transform: rotateY(180deg);
+            color: #333;
+            padding: 15px 8px;
+        }
+
+        /* Final scroll message */
+        .scrollbox {
+            max-height: 220px;
+            overflow-y: auto;
+            margin-top: 12px;
+            text-align: left;
+            padding: 10px;
+            line-height: 1.6;
+        }
+
+        .scrollbox p {
+            margin: 10px 0;
+        }
+
+        /* Snowman and Santa images */
+        .character-img {
+            margin: 15px 0;
+            cursor: pointer;
+            transition: transform .3s;
+            position: relative;
+        }
+
+        .character-img:hover {
+            transform: scale(1.05);
+        }
+
+        .tap-to-read {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(255, 107, 107, .4);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .santa-container {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Background music (starts after first tap) -->
+    <audio id="bgm" src="music.mp3" loop></audio>
+
+    <!-- SCREEN 1 — Intro gift -->
+    <div id="s1" class="screen active">
+        <div class="snow"></div>
+
+        <div class="float-text">For someone special</div>
+
+        <img src="gift.png" width="110" class="gift-box" onclick="next(2); startAudio();" alt="Gift Box">
+    </div>
+
+    <!-- SCREEN 2 — Snowman + Open -->
+    <div id="s2" class="screen">
+        <div class="snow"></div>
+
+        <div class="card">
+            <img src="snowman.png" width="120" class="character-img" alt="Snowman">
+            <h2>This Christmas, something special for you SONA</h2>
+            <button onclick="next(3)">Open it 🎁</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 3 — Flip cards -->
+    <div id="s3" class="screen">
+        <div class="snow"></div>
+
+        <div class="card">
+            <h2>Just for you</h2>
+            <div class="soft">I don't need a gift, because…</div>
+
+            <div class="cards">
+
+                <div class="flip" onclick="flip(this)">
+                    <div class="flip-inner">
+                        <div class="front"><img src="heart.png" width="40" alt="Heart"></div>
+                        <div class="back">You</div>
+                    </div>
+                </div>
+
+                <div class="flip" onclick="flip(this)">
+                    <div class="flip-inner">
+                        <div class="front"><img src="heart.png" width="40" alt="Heart"></div>
+                        <div class="back">are</div>
+                    </div>
+                </div>
+
+                <div class="flip" onclick="flip(this)">
+                    <div class="flip-inner">
+                        <div class="front"><img src="heart.png" width="40" alt="Heart"></div>
+                        <div class="back">my</div>
+                    </div>
+                </div>
+
+                <div class="flip" onclick="flip(this)">
+                    <div class="flip-inner">
+                        <div class="front"><img src="heart.png" width="40" alt="Heart"></div>
+                        <div class="back">best</div>
+                    </div>
+                </div>
+
+                <div class="flip" onclick="flip(this)">
+                    <div class="flip-inner">
+                        <div class="front"><img src="heart.png" width="40" alt="Heart"></div>
+                        <div class="back">gift</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- SCREEN 4 — Final Santa + message -->
+    <div id="s4" class="screen">
+        <div class="snow"></div>
+
+        <div class="card">
+            <h2 style="margin-bottom:20px;">Merry Christmas<br>to my Cutie Pie</h2>
+
+            <div class="santa-container">
+                <img src="santa.png" width="280" class="character-img" onclick="revealMsg()" alt="Santa" id="santaImg">
+                <div class="tap-to-read" id="tapLabel">Tap to read</div>
+            </div>
+
+            <div id="msg" class="scrollbox" style="display:none;">
+                <p>This Christmas, I want you to know how truly special you are to me and to those around you.</p>
+                <p>You're the reason behind so many happy moments I've experienced this year.</p>
+                <p>I may not be perfect, but I promise to always be there for you, through good times and bad. I'll
+                    always hold your hand and support you.</p>
+                <p>Thank you for everything and being wonderful you.</p>
+                <p>I feel so lucky to have you 🥰.</p>
+                <p>Merry Christmas</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let flipped = 0;
+        const total = 5;
+
+        function startAudio() {
+            const a = document.getElementById("bgm");
+            if (a.paused) {
+                a.play().catch(err => {
+                    console.log("Audio autoplay blocked. User interaction required.");
+                });
+            }
+        }
+
+        function next(n) {
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("s" + n).classList.add("active");
+        }
+
+        function flip(card) {
+            if (card.classList.contains("flipped")) return;
+            card.classList.add("flipped");
+            flipped++;
+
+            if (flipped === total) {
+                setTimeout(() => next(4), 3000); // wait 3 seconds before next screen
+            }
+        }
+
+        function revealMsg() {
+            const msg = document.getElementById("msg");
+            const tapLabel = document.getElementById("tapLabel");
+            msg.style.display = "block";
+            if (tapLabel) tapLabel.style.display = "none";
+            msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+
+</body>
+
+</html>
+```
